@@ -1,0 +1,43 @@
+<% comments.each do |comment| %>  
+  <div class="comments-show">
+    <div class="comment">
+      <div class="row">
+        <div class="col-3 col-sm-3 col-md-2"><%= content_tag(:div, comment.user.nickname, class: "etc") %></div>
+        <div class="col-4 col-sm-5 col-md-2"><%= content_tag(:div, " #{time_ago_in_words(comment.created_at)} 전", class: "far fa-clock etc", style: "background-color: #e6e6e6; padding: 5px 15px 5px 15px; border-radius: 20px;", align: "center") %></div>
+        <div class="col-sm-4 offset-md-6 col-md-2 d-none d-sm-block" align="right">
+          <a onclick="showHide('comment_<%= comment.id %>')" onfocus="this.blur()"><i class="far fa-comments"></i> 답댓글</a>
+          <span style="margin-left: 10px; margin-right: 10px;">|</span>
+          <%= link_to "", comment_path(comment), method: :delete, remote: false, data: { confirm: "정말로 지우시겠습니까?" }, style: "color: red; font-weight: bold; font-size: 20px;", class: "fas fa-times" %>
+        </div>
+        <div class="offset-3 col-1 d-sm-none" align="right">
+          <%= link_to "", comment_path(comment), method: :delete, remote: false, data: { confirm: "정말로 지우시겠습니까?" }, style: "color: red; font-weight: bold; font-size: 20px;", class: "fas fa-times" %>
+        </div>
+      </div>
+      <%= content_tag(:div, comment.body, style: "white-space: pre-wrap;") %>
+      <div class="offset-8 col-4 d-sm-none" align="right">
+        <a onclick="showHide('comment_<%= comment.id %>')" onfocus="this.blur()"><i class="far fa-comments"></i> 답댓글</a>
+      </div>
+      <hr/>
+      
+      <div id="comment_<%= comment.id %>" style="display:none;">
+        <div class="reply-form">
+          <%= form_for @new_comment do |f| %>
+            <%= f.hidden_field :commentable_id, value: @new_comment.commentable_id %>
+            <%= f.hidden_field :commentable_type, value: @new_comment.commentable_type %>
+            <%= f.hidden_field :comment_id, value: comment.id %>
+            <div class="field form-group">
+              <%= f.hidden_field :nickname, value: current_user.email, required: "true" %>
+              <%= f.text_area :body, class: 'form-control' %>
+            </div>
+            <div class="field form-group">
+              <%= submit_tag "답댓글 작성", style: "float: right;", class: "btn btn-info" %>
+            </div>
+          <% end %>
+        </div><br/><br/><br/>
+      </div>
+    </div>
+    <div style="margin-left: 30px;">
+      <%= render partial: "comments/reply_end", locals: {comments: comment.children} %>
+    </div>
+  </div>
+<% end %>

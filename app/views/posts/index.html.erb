@@ -1,0 +1,44 @@
+<div class="board d-none d-md-block" style="background: url('/img/main_title.jpg') no-repeat fixed; background-size: 100% 70%; background-position:0px -180px;">
+  <div class="container" align="left">
+    <span class="post_title fade-anim"><%= link_to @bulletin.title, bulletin_posts_path(@bulletin.id), class: "board_title" %></span>
+  </div>
+</div>
+<div class="board_mobile d-md-none" style="background: url('/img/main_title.jpg') no-repeat center center/cover scroll;">
+  <span class="post_title fade-anim"><%= link_to @bulletin.title, bulletin_posts_path(@bulletin.id), class: "board_title" %></span>
+</div>
+
+<% #경고메세지 출력 (아이디, 비밀번호 잘못 칠 시 등등...) %>
+<% if alert %>
+    <div class="alert alert-danger tlert-dismissible fade show text-center" style="padding: 10px; background-color: #FF4B5C; color: white; border-radius: 0; margin-bottom: 0; border: 0">
+    <%= alert %>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    <% elsif notice %>
+    <div class="alert alert-danger tlert-dismissible fade show text-center" style="padding: 10px; background-color: #43AC6A; color: white; border-radius: 0; margin-bottom: 0; border: 0">
+    <%= notice %>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+<% end %>
+
+<% if @bulletin.opt_votable == true %>
+  <%= render 'posts/index/index_vote_best_status' %>
+<% end %>
+
+<div class="container" style="margin-top: 40px;">
+  <% if @posts.empty? %>
+    <h1 align="center">게시글이 없습니다.</h1>
+  <% else %>
+    <div align="center" class="row fade-anim_2">
+      <% @posts.each do |post| %>
+        <% if @bulletin.opt_votable == true %>
+          <%= render 'posts/index/index_vote', post: post %>
+        <% else %>
+          <%= render 'posts/index/index_normal', post: post %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <div style="margin-top: 30px;" align="right"><%= link_to '글 쓰기', (@bulletin.present? ?  new_bulletin_post_path(@bulletin) : new_post_path), class: "btn btn-sm btn-outline-dark" %></div>
+  <div class="pagination justify-content-center"><%= paginate @posts %></div>
+<div style="margin-bottom: 100px;"></div>

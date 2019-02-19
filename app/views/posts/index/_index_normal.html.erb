@@ -1,0 +1,15 @@
+<tr>
+    <td><%= post.title %></td>
+    <%# bulletin/id/posts에서 게시글 내용에  p 태그가 노출됨 tinymce 문제인듯 왜 컨텐츠만? 일단 .html_safe로 임시 방편 조치 but 테이블 위치 깨짐 %>
+    <td><%= post.content.html_safe %></td>
+    <td>
+      <%= link_to '열람', (@bulletin.present? ? [post.bulletin, post] : post), class: 'btn btn-default' %>
+      <% if can? :update, post %>
+        <%= link_to '편집', (@bulletin.present? ? edit_bulletin_post_path(post.bulletin, post) : edit_post_path(post)), class: 'btn btn-default' %>
+      <% end %>
+      
+      <% if can? :destroy, post %>
+        <%= link_to '삭제', (@bulletin.present? ? [post.bulletin, post] : post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default' %>
+      <% end %>
+    </td>
+</tr>

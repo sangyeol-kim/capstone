@@ -1,0 +1,38 @@
+<%= simple_form_for(@bulletin.present? ? [@post.bulletin, @post] : @post) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field" style="margin-top: 20px;">
+    <div class="row">
+      <div class="d-none d-sm-block col-sm-1 col-md-1"><%= f.label :"제목", style: "line-height: 35px;" %></div>
+      <div class="col-12 col-sm-11 col-md-11"><%= f.text_field :title, id: :post_title, class: "form-control", placeholder: "제목" %></div>
+    </div><br/>
+  </div>
+
+  <div class="field">
+    <%= f.label :"내용" %>
+    <%= tinymce :language => "en" %>
+    <%= f.text_area :content, id: :post_content, class: "form-control tinymce", rows: "10" %>
+  </div>
+  
+  <div class="field" style="margin-top: 20px;">
+    <div class="row">
+      <div class="col-4 col-sm-2 col-md-2"><b><%= f.label :"썸네일 이미지" %></b></div>
+      <div class="col-8 col-sm-10 col-md-10"><%= f.file_field :post_img, accept: 'image/png,image/gif,image/jpeg' %></div>
+    </div>
+  </div>
+  
+  <div class="actions" align="center" style="margin-top: 30px;">
+    <%= f.submit :"글 작성", class: "btn btn-primary" %>
+    <%= link_to '목록', (@bulletin.present? ? bulletin_posts_path(@bulletin) : posts_path), class: "btn btn-outline-dark" %>
+  </div>
+<% end %>

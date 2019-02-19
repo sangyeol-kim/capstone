@@ -1,0 +1,2 @@
+class VoteComment < ApplicationRecord
+end

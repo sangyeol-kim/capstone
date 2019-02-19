@@ -1,0 +1,31 @@
+<!-- Typed.js 문자 리스트 -->
+<div id="component_list">
+    <% @vote_mention_list.first(5).each do |x| %>
+        <p><%= x.mention %></p>
+    <% end %>
+    <p>민주주의의 꽃</p>
+</div>
+
+<!-- PC View -->
+<div class="d-none d-sm-block" style="background: url('/img/main_background2.jpg') no-repeat fixed; background-size: 100% 100%; padding-top: 200px; padding-bottom: 550px;">
+  <div class="container" align="center">
+    <span class="title" style="font-size: 100px;">투표는 <span id="typed" style="color: yellow"></span> 입니다.</span>
+    <div align="center" style="margin-top: 100px;">
+        <b style="font-size: 40px; font-family: 'Nanum Brush Script'; color: white;">여러분들이 생각하는 투표란?</b>
+        <%= form_with(url: homes_create_path, local: true) do |form| %>
+          <div class="row" style="margin-top: 40px;">
+            <div class="offset-md-2"></div>
+            <div class="col-md-6"><%= form.text_field :mention, autocomplete: "off", style: "color: white; font-size: 50px; background-color: rgba(96, 125, 139, 0); border-top: 0px; border-bottom: 3px solid white; border-left: 0px; border-right: 0px; width: 100%; margin-top: -20px;" %></div>
+            <div class="col-md-1"><%= form.submit "한마디 하기", class: "btn btn-success", style: "font-size: 30px" %></div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- 모바일 View -->
+<div class="d-sm-none" style="background: url('/img/main_background2.jpg') no-repeat center center/cover scroll; padding-top: 100px; padding-bottom: 100px;">
+  <div class="container" align="center">
+    <span class="title" style="font-size: 40px;">투표는 <span id="typed" style="color: yellow"></span> 입니다.</span>
+  </div>
+</div>

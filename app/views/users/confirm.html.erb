@@ -1,0 +1,19 @@
+<body class="login_background">
+    <div class="offset-md-1 col-md-4" style="background-color: rgba(0, 0, 0, 0.46); color: white; padding: 30px;">
+        <h2 style="font-family: 'Nanum Brush Script'; font-size: 50px; margin-left: 20px;">민주주의의 꽃은 한 표 입니다!</h2><br/>
+        <span style="margin-left: 20px;">회원가입 진행 전, 학생 인증을 진행해 주셔야 합니다.</span><br/>
+        <span style="margin-left: 20px;"><span style="color: yellow; font-weight: bold;">정면으로 촬영된 학생증 사진</span>을 업로드 해주세요.</span><br/><br/>
+        <%= form_with url: users_sign_up_path, :html => {:multipart => true} do |form| %>
+            <%= form.file_field :image_analyst, style: "margin-left: 20px;", required: true %><br/>
+            <%= form.submit "파일 업로드", class: "btn btn-primary", style: "margin-left: 20px; margin-top: 20px;" %>
+        <% end %>
+        <%# 주의 : multipart 옵션이 없을 시 nil로 데이터가 전송됨, 더불어 반드시 POST 방식으로 데이터가 전송되어야 함. %>
+        
+        <hr style="border: 1px solid white;"/>
+        <div>
+            <%= link_to "회원가입", users_confirm_path, style: "color: white;" %>
+            <span style="margin-left: 10px; margin-right: 10px;">|</span>
+            <%= link_to "로그인", new_user_session_path, style: "color: white;" %>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,2 @@
+<%= link_to "찬성 #{@post.get_upvotes.size}", like_post_path(@post), method: :put, class: "btn btn-success" %>
+<%= link_to "반대 #{@post.get_downvotes.size}", dislike_post_path(@post), method: :put, class: "btn btn-danger" %>

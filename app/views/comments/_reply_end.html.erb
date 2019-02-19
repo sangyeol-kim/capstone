@@ -1,0 +1,18 @@
+<% comments.each do |comment| %>  
+  <div class="comments-show">
+    <div class="comment">
+      <div class="row">
+        <div class="col-4 col-sm-3 col-md-2"><%= content_tag(:div, comment.user.nickname, class: "etc") %></div>
+        <div class="col-4 col-sm-5 col-md-2"><%= content_tag(:div, " #{time_ago_in_words(comment.created_at)} 전", class: "far fa-clock etc", style: "background-color: #e6e6e6; padding: 5px 15px 5px 15px; border-radius: 20px;", align: "center") %></div>
+        <div class="col-4 col-sm-4 offset-md-6 col-md-2" align="right">
+          <%= link_to "", comment_path(comment), method: :delete, remote: false, data: { confirm: "정말로 지우시겠습니까?" }, style: "color: red; font-weight: bold; font-size: 20px;", class: "fas fa-times" %>
+        </div>
+      </div>
+      <%= content_tag(:div, comment.body, style: "white-space: pre-wrap;") %>
+    </div>
+    <div style="margin-left: 100px;">
+      <%= render partial: "comments/reply", locals: {comments: comment.children} %>
+    </div>
+  </div>
+  <hr/>
+<% end %>

@@ -1,0 +1,51 @@
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-4">
+        <img width="286px" height="180px" src="<%= @post.post_img.present? ? "#{@post.post_img}" : "/img/vote_thum.png" %>">
+    </div>
+    <div class="col-md-8">
+        <h2><%= @post.title %></h2>
+        <hr/>
+        <div class="row">
+            <div class="col-md-8" align="left"><%= @post.user == nil ? "#{@post.nickname}" : "#{@post.user.nickname}" %></div>
+            <div class="col-md-4" align="right"><i class="far fa-clock"></i> <%= @post.created_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M:%S') %></div>
+        </div>
+        <div class="col-md-12" align="center">
+            <div class="progress" style="width: 50%; margin-top: 30px; margin-bottom: 30px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: <%= @post.get_upvotes.size.to_f / @post.votes_for.size * 100 %>%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                    <% if @post.get_upvotes.size >= 1 %>
+                        <%= (@post.get_upvotes.size.to_f / @post.votes_for.size * 100).round(2) %>%
+                    <% end %>
+                </div>
+                <div class="progress-bar bg-danger" role="progressbar" style="width: <%= @post.get_downvotes.size.to_f / @post.votes_for.size * 100 %>%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                    <% if @post.get_downvotes.size >= 1 %>
+                        <%= (@post.get_downvotes.size.to_f / @post.votes_for.size * 100).round(2) %>%
+                    <% end %>
+                </div>
+            </div>
+            <%= render 'posts/render/votable' %>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 40px;">
+    <%= @post.content.html_safe %>
+</div>
+
+<%# admin일 경우 해당 post에 대한 투표 현황을 볼 수 있음 %>
+<% if current_user.has_role? :admin %>
+    <%= link_to "javascript:function()", :onclick => "showHide('vote_list')", :onfocus => "this.blur()" do %>
+        <%= content_tag(:div, " 투표 참여리스트", class: "fas fa-bullhorn col-12 col-sm-12 col-md-12", align: "left" ) %>
+    <% end %>
+
+    <div id="vote_list" style="margin-top: 20px; display:none;">
+        <b>좋아한 사람</b> :
+        <% @post.votes_for.up.by_type(User).voters.each do |x| %>
+            <span><%= x.nickname %> </span>
+        <% end %>
+        <br/>
+        <b>싫어한 사람</b> :
+        <% @post.votes_for.down.by_type(User).voters.each do |x| %>
+            <span><%= x.nickname %> </span>
+        <% end %>
+    </div>
+<% end %>

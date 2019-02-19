@@ -1,0 +1,74 @@
+<body class="login_background" style="padding-top: 200px !important; padding-bottom: 200px !important; overflow-y: auto !important;">
+  <div class="offset-md-1 col-md-4" style="background-color: rgba(0, 0, 0, 0.46); color: white; padding: 30px;">
+  <h2 align="center">개인정보 수정</h2>
+  
+  <%# 경고, 안내메세지 %>
+  <div style="color: yellow; margin-left: 20px">
+    <%= alert %>
+    <%= notice %>
+  </div>
+  
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <div style="color: yellow; margin-left: 20px; font-size: 20px;">
+      <%= devise_error_messages! %>
+    </div>
+  
+    <div class="field" style="margin-top: 30px;">
+      <%= f.label :email %><br />
+     <fieldset disabled><%= f.email_field :email, autofocus: true, autocomplete: "email", :required => true, class: "form-control is-invalid col-12 col-sm-7 col-md-11" %></fieldset>
+    </div>
+  
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+    
+    <div class="field" style="margin-top: 20px;">
+      <%= f.label :"닉네임" %><br />
+      <%= f.text_field :nickname, class: "form-control col-12 col-sm-7 col-md-11", required: true %>
+    </div><br />
+    
+    <div class="field">
+      <%= f.label :current_password %><br />
+      <%= f.password_field :current_password, autocomplete: "off", :required => true, class: "form-control col-12 col-sm-7 col-md-11" %>
+      <small>
+        <em>* <%= @minimum_password_length %> 글자 이상</em><br/>
+        <em>* 정보 수정을 원할 시 암호를 입력해주셔야 합니다.</em>
+      </small><br/><br/>
+    </div>
+    
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-5">
+        <%= f.label :학번 %>
+          <fieldset disabled><%= f.text_field :std_number, autocomplete: "std_number", :required => true, class: "form-control is-invalid" %></fieldset>
+      </div>
+      <div class="offset-md-1 col-12 col-sm-7 col-md-5">
+        <%= f.label :학과 %>
+        <fieldset disabled><%= f.text_field :std_major, autocomplete: "std_major", :required => true, class: "form-control is-invalid" %></fieldset>
+      </div>
+    </div><br/>
+    
+    <div class="row" style="margin: 10px 0px 10px 0px;">
+      <div class="col-md-4" style="border-bottom: 1px solid white; height: 10px"></div>
+      <div align="center" class="col-md-4">회원정보 수정</div>
+      <div class="col-md-4" style="border-bottom: 1px solid white; height: 10px"></div>
+    </div>
+  
+    <div class="row">
+      <div class="field col-md-5">
+        <%= f.label :password %><br />
+        <%= f.password_field :password, autocomplete: "off", class: "form-control" %><br/>
+      </div>
+    
+      <div class="field offset-md-1 col-md-5">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %><br/>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <%= f.submit "정보 수정", class: "btn btn-primary", style: "margin-top: 10px;" %>
+    </div>
+  <% end %><br/>
+  <%= link_to "&nbsp;회원탈퇴 하기".html_safe, registration_path(resource_name), data: { confirm: "제발..." }, method: :delete, style: "color: white;" %>
+  </div>
+</body>

@@ -1,0 +1,67 @@
+<body class="login_background" style="padding-top: 250px !important; padding-bottom: 400px !important;">
+  <div class="offset-md-1 col-md-4" style="background-color: rgba(0, 0, 0, 0.46); color: white; padding: 30px;">
+    <h2 align="center">회원가입</h2>
+    
+    <%# 경고, 안내메세지 %>
+    <div style="color: yellow; margin-left: 20px">
+      <%= alert %>
+      <%= notice %>
+    </div>
+    
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <div style="color: yellow; margin-left: 20px; font-size: 20px;">
+      <%= devise_error_messages! %>
+    </div>
+    
+    <div class="field" style="margin-top: 20px;">
+      <%= f.label :email %><br />
+      <fieldset disabled><%= content_tag(:span, "#{@std_email == nil ? '해당 학번은 이메일이 없음' : @std_email}", class: "form-control is-invalid col-12 col-sm-7 col-md-11") %></fieldset>
+      <%= f.hidden_field :email, value: "#{@std_email == nil ? '해당 학번은 이메일이 없음' : "#{@std_email}"}", required: true %>
+    </div><br />
+    
+    <div class="field" style="margin-top: 20px;">
+      <%= f.label :"닉네임" %><br />
+      <%= f.text_field :nickname, class: "form-control col-12 col-sm-7 col-md-11", required: true %>
+    </div><br />
+    
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-5">
+        <%= f.label :학번 %>
+        <% if (@std_number != nil) %>
+          <fieldset disabled><%= content_tag(:span, "#{@std_number}", class: "form-control is-invalid") %></fieldset>
+          <%= f.hidden_field :std_number, value: "#{@std_number}" %>
+        <% else %>
+          <fieldset disabled><%= content_tag(:span, "유효하지 않은 입력 (#{@std_number})", class: "form-control is-invalid") %></fieldset>
+        <% end %>
+      </div>
+      <div class="offset-md-1 col-12 col-sm-7 col-md-5">
+        <%= f.label :"학과(부)" %>
+        <fieldset disabled><%= content_tag(:span, "#{@std_major}", class: "form-control is-invalid") %></fieldset>
+        <%= f.hidden_field :std_major, value: "#{@std_major}" %>
+      </div>
+    </div><br/>
+    
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-5">
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "off", :required => true, class: "form-control" %>
+        <small><em>* <%= @minimum_password_length %> 글자 이상</em></small>
+      </div>
+      <div class="offset-md-1 col-12 col-sm-7 col-md-5">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, autocomplete: "off", :required => true, class: "form-control" %>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <% if not @std_email == nil %>
+        <%= f.submit "회원 가입", class: "btn btn-primary", style: "margin-top: 20px;" %>
+      <% else %>
+        <%= content_tag(:div, "학번에 매치되는 이메일이 없어 가입이 불가합니다.", style: "margin-top: 30px; color: yellow;") %>
+      <% end %>
+    </div>
+    <% end %>
+    <hr style="border: 1px solid white;"/>
+    <%= render "devise/shared/info" %>
+  </div>
+</body>

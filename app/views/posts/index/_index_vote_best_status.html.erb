@@ -1,0 +1,39 @@
+<div style="margin-top: 50px;"></div>
+<div class="container d-none d-md-block" style="position: relative;">
+  <img src="/img/monitor.png" width="350px">
+  <div class="row notice" style="position: absolute; bottom: 30px; left: 40px;">
+    <ul class="rolling">
+      <% @post_vote_order.each do |x| %>
+        <% if (x.cached_votes_up >= 1) %>
+          <%= link_to bulletin_post_path(x.bulletin, x), style: "color: black" do %>
+            <li class="row">
+              <div class="col-md-3" align="center">
+                  <b><%= content_tag(:div, truncate( raw( sanitize(x.title, :tags => %w(table tr td), :attributes => %w(id class style) ) ), :length => 15, :omission => "...")) %></b>
+                <div class="progress" style="width: 100%;">
+                  <div class="progress-bar bg-info" role="progressbar" style="width: <%= x.get_upvotes.size.to_f / x.votes_for.size * 100 %>%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                    <% if x.get_upvotes.size >= 1 %>
+                        <%= (x.get_upvotes.size.to_f / x.votes_for.size * 100).round(2) %>%
+                    <% end %>
+                  </div>
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: <%= x.get_downvotes.size.to_f / x.votes_for.size * 100 %>%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                    <% if x.get_downvotes.size >= 1 %>
+                      <%= (x.get_downvotes.size.to_f / x.votes_for.size * 100).round(2) %>%
+                    <% end %>
+                  </div>
+                </div>
+                  <span><i class="far fa-thumbs-up" style="color: #00d000; font-weight: bold"></i> : <%= x.get_upvotes.size %></span>
+                  <span style="margin-left: 30px;"><i class="far fa-thumbs-down" style="color: red; font-weight: bold"></i> : <%= x.get_downvotes.size %></span>
+              </div>
+              <div class="offset-md-1 col-md-7">
+                <h1><%= content_tag(:div, truncate( raw( sanitize(x.title, :tags => %w(table tr td), :attributes => %w(id class style) ) ), :length => 15, :omission => "..."), align: "left") %></h1>
+                <%= content_tag(:div, x.created_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M:%S'), style: "margin-top: -10px; margin-bottom: -20px;", align: "right") %>
+                <hr/>
+                <%= content_tag(:div, truncate( raw( sanitize(x.content, :tags => %w(table tr td), :attributes => %w(id class style) ) ), :length => 45, :omission => "..."), align: "left") %>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="col-12 col-sm-12 col-md-4" style="margin-top: 20px;">
+  <div class="card" style="width: 18rem;">
+    <%= link_to bulletin_post_path(post.bulletin, post), style: "color: black;" do %>
+      <img class="card-img-top" width="286px" height="180px" src="<%= post.post_img.present? ? "#{post.post_img}" : "/img/vote_thum.png" %>" alt="Card image cap">
+      <div class="card-body">
+        <b><%= content_tag(:p, truncate( raw( sanitize(post.title, :tags => %w(table tr td), :attributes => %w(id class style) ) ), :length => 15, :omission => "...")) %></b>
+        <%= content_tag(:div, truncate( raw( sanitize(post.content, :tags => %w(table tr td), :attributes => %w(id class style) ) ), :length => 35, :omission => "..."), align: "left") %>
+        <hr/>
+        <div class="row">
+          <div class="col-12 col-sm-8 col-md-8">
+            <div class="progress" style="width: 100%; margin-bottom: 30px;">
+              <div class="progress-bar bg-info" role="progressbar" style="width: <%= post.get_upvotes.size.to_f / post.votes_for.size * 100 %>%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                <% if post.get_upvotes.size >= 1 %>
+                    <%= (post.get_upvotes.size.to_f / post.votes_for.size * 100).round(2) %>%
+                <% end %>
+              </div>
+              <div class="progress-bar bg-danger" role="progressbar" style="width: <%= post.get_downvotes.size.to_f / post.votes_for.size * 100 %>%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                <% if post.get_downvotes.size >= 1 %>
+                  <%= (post.get_downvotes.size.to_f / post.votes_for.size * 100).round(2) %>%
+                <% end %>
+              </div>
+            </div>
+          </div>
+          
+          <div align="right" class="col-12 col-sm-8 col-md-4">
+            <%= content_tag(:span, " #{post.unique_impression_count}", class: "card-text far fa-eye") %>
+          </div>
+        </div>
+        <div class="row" align="right">
+          <%= content_tag(:div,"#{post.user == nil ? "#{post.nickname}" : "#{post.user.nickname}"}", class: "col-5 col-sm-5 col-md-5 etc", align: "left") %>
+          <%= content_tag(:div," #{time_ago_in_words(post.created_at)} 전", class: "col-7 col-sm-7 col-md-7 card-text far fa-clock", align: "right") %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
